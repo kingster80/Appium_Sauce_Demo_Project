@@ -15,6 +15,7 @@ import utils.ConfigReader;
 
 public class SauceDemoLoginTest extends BaseClass {
 
+	
     private SauceDemoLoginPage loginPage;
 
     @BeforeMethod
