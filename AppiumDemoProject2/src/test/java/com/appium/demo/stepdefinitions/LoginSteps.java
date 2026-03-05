@@ -1,6 +1,5 @@
 package com.appium.demo.stepdefinitions;
 
-import com.appium.demo.base.BaseClass;
 import com.appium.demo.pages.SauceDemoLoginPage;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
