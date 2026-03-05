@@ -1,0 +1,46 @@
+name: Appium Android Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Appium
+        run: |
+          npm install -g appium
+          appium driver install uiautomator2
+
+      - name: Override env to ci
+        run: |
+          sed -i '' 's/env=local/env=ci/' src/test/resources/config.properties
+
+      - name: Start Emulator and Run Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 13
+          target: google_apis
+          arch: x86_64
+          profile: pixel_5
+          script: |
+            appium --allow-insecure chromedriver_autodownload &
+            sleep 10
+            mvn clean test
