@@ -1,4 +1,4 @@
-package pages;
+package com.appium.demo.pages;
 
 import java.util.Set;
 import java.time.Duration;
@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.remote.SupportsContextSwitching;
-import utils.ConfigReader;
+import com.appium.demo.utils.ConfigReader;
 
 public class SauceDemoLoginPage {
 

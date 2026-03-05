@@ -1,5 +1,4 @@
-// utils/ConfigReader.java
-package utils;
+package com.appium.demo.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;

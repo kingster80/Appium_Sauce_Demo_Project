@@ -1,4 +1,4 @@
-package base;
+package com.appium.demo.base;
 
 import java.net.MalformedURLException;
 import java.net.URI;

@@ -1,5 +1,4 @@
-package tests;
-
+package com.appium.demo.tests;
 
 import java.time.Duration;
 import org.openqa.selenium.By;
@@ -9,9 +8,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import base.BaseClass;
-import pages.SauceDemoLoginPage;
-import utils.ConfigReader;
+import com.appium.demo.base.BaseClass;
+import com.appium.demo.pages.SauceDemoLoginPage;
+import com.appium.demo.utils.ConfigReader;
 
 public class SauceDemoLoginTest extends BaseClass {
 
