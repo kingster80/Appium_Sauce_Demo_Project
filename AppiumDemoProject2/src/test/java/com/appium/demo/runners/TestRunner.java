@@ -11,7 +11,6 @@ import io.cucumber.testng.CucumberOptions;
         "html:target/cucumber-reports.html"
     },
     monochrome = true
-    
 )
 public class TestRunner extends AbstractTestNGCucumberTests {
 }
