@@ -67,5 +67,5 @@ jobs:
           script: |
             appium --allow-insecure chromedriver_autodownload &
             sleep 15
-            cd AppiumDemoProject2 && mvn clean test || cat target/surefire-reports/*.txt
+            cd /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2 && mvn clean test || cat target/surefire-reports/*.txt
             mvn clean test
