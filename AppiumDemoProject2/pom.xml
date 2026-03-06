@@ -14,10 +14,12 @@
       <artifactId>java-client</artifactId>
       <version>9.3.0</version>
       <exclusions>
+      
         <exclusion>
           <groupId>org.seleniumhq.selenium</groupId>
           <artifactId>*</artifactId>
         </exclusion>
+        
       </exclusions>
     </dependency>
 
