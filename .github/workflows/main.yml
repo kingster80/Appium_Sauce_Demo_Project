@@ -47,11 +47,11 @@ jobs:
       - name: Start Emulator and Run Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 13
-          target: google_apis
+          api-level: 29
+          target: default
           arch: x86_64
           profile: pixel_5
           script: |
             appium --allow-insecure chromedriver_autodownload &
-            sleep 10
+            sleep 15
             mvn clean test
