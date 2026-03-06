@@ -40,7 +40,7 @@ public class BaseClass {
             options.setAvd("test");
             options.setNewCommandTimeout(Duration.ofSeconds(60));
             options.withBrowserName("chrome");
-            options.setNoReset(false);
+            options.setNoReset(true);
         }
 
         try {
