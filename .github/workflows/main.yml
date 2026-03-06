@@ -25,7 +25,21 @@ jobs:
           appium driver install uiautomator2@latest
       - name: Override env to ci
         run: |
-          sed -i 's/env=local/env=ci/' src/test/resources/config.properties
+          echo ">>> Current directory:"
+          pwd
+          echo ">>> Listing src/test/resources:"
+          ls -la src/test/resources/
+          mkdir -p src/test/resources
+          if [ -f src/test/resources/config.properties ]; then
+            sed -i 's/env=local/env=ci/' src/test/resources/config.properties
+          else
+            echo "url=https://www.saucedemo.com" > src/test/resources/config.properties
+            echo "username=standard_user" >> src/test/resources/config.properties
+            echo "password=secret_sauce" >> src/test/resources/config.properties
+            echo "env=ci" >> src/test/resources/config.properties
+          fi
+          echo ">>> Config file contents:"
+          cat src/test/resources/config.properties
       - name: Start Emulator and Run Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
