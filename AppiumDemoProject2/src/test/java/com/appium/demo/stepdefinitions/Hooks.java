@@ -4,9 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
-
 import com.appium.demo.utils.ConfigReader;
-
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
@@ -37,7 +35,7 @@ public class Hooks {
         } else {
             // ✅ Emulator settings for GitHub Actions
             options.setPlatformName("Android");
-            options.setPlatformVersion("13");
+            options.setPlatformVersion("10");
             options.setDeviceName("Pixel_5");
             options.setAvd("Pixel_5");
             options.setNewCommandTimeout(Duration.ofSeconds(60));

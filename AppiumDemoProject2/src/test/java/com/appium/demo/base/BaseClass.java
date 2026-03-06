@@ -35,7 +35,7 @@ public class BaseClass {
         } else {
             // ✅ Emulator — GitHub Actions CI
             options.setPlatformName("Android");
-            options.setPlatformVersion("13");
+            options.setPlatformVersion("10");
             options.setDeviceName("Pixel_5");
             options.setAvd("Pixel_5");
             options.setNewCommandTimeout(Duration.ofSeconds(60));
