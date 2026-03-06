@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -25,19 +25,25 @@ jobs:
           appium driver install uiautomator2@latest
       - name: Override env to ci
         run: |
-          echo ">>> Current directory:"
-          pwd
           mkdir -p src/test/resources
-          if [ -f src/test/resources/config.properties ]; then
-            sed -i 's/env=local/env=ci/' src/test/resources/config.properties
-          else
-            echo "url=https://www.saucedemo.com" > src/test/resources/config.properties
-            echo "username=standard_user" >> src/test/resources/config.properties
-            echo "password=secret_sauce" >> src/test/resources/config.properties
-            echo "env=ci" >> src/test/resources/config.properties
-          fi
-          echo ">>> Config file contents:"
-          cat src/test/resources/config.properties
+          python3 -c "
+          import os
+          path = 'src/test/resources/config.properties'
+          if os.path.exists(path):
+              with open(path, 'r') as f:
+                  content = f.read()
+              content = content.replace('env=local', 'env=ci')
+              with open(path, 'w') as f:
+                  f.write(content)
+          else:
+              with open(path, 'w') as f:
+                  f.write('url=https://www.saucedemo.com\n')
+                  f.write('username=standard_user\n')
+                  f.write('password=secret_sauce\n')
+                  f.write('env=ci\n')
+          with open(path, 'r') as f:
+              print(f.read())
+          "
       - name: Start Emulator and Run Tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
