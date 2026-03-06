@@ -27,8 +27,6 @@ jobs:
         run: |
           echo ">>> Current directory:"
           pwd
-          echo ">>> Listing src/test/resources:"
-          ls -la src/test/resources/
           mkdir -p src/test/resources
           if [ -f src/test/resources/config.properties ]; then
             sed -i 's/env=local/env=ci/' src/test/resources/config.properties
