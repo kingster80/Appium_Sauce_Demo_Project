@@ -36,8 +36,8 @@ public class BaseClass {
             // ✅ Emulator — GitHub Actions CI
             options.setPlatformName("Android");
             options.setPlatformVersion("10");
-            options.setDeviceName("Pixel_5");
-            options.setAvd("Pixel_5");
+            options.setDeviceName("test");
+            options.setAvd("test");
             options.setNewCommandTimeout(Duration.ofSeconds(60));
             options.withBrowserName("chrome");
             options.setNoReset(false);
