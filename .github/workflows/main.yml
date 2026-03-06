@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+defaults:
+  run:
+    working-directory: AppiumDemoProject2
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -67,5 +70,4 @@ jobs:
           script: |
             appium --allow-insecure chromedriver_autodownload &
             sleep 15
-            cd /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2 && mvn clean test || cat target/surefire-reports/*.txt
-            mvn clean test
+            mvn clean test || cat target/surefire-reports/*.txt
