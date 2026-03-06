@@ -68,6 +68,6 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           disable-animations: true
           script: |
-            appium --allow-insecure chromedriver_autodownload &
+            appium --allow-insecure uiautomator2:chromedriver_autodownload &
             sleep 15
             mvn clean test -f /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/pom.xml || cat /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/target/surefire-reports/*.txt
