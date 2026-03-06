@@ -41,7 +41,7 @@ public class BaseClass {
             options.setNewCommandTimeout(Duration.ofSeconds(60));
             options.withBrowserName("chrome");
             options.setNoReset(true);
-            options.setCapability("appium:chromedriverExecutableDir", "/tmp/chromedriver");
+            options.setCapability("appium:chromedriverExecutable", "/usr/local/bin/chromedriver");
             options.setCapability("appium:autodownloadChromedriver", true);
         }
 
