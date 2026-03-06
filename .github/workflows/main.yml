@@ -70,4 +70,4 @@ jobs:
           script: |
             appium --allow-insecure uiautomator2:chromedriver_autodownload &
             sleep 15
-            mvn clean test -f /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/pom.xml || cat /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/target/surefire-reports/*.txt
+            mvn clean test -f /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/pom.xml || cat /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/target/surefire-reports/*.txtt
