@@ -4,6 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+
+import com.appium.demo.utils.ConfigReader;
+
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
@@ -17,14 +20,30 @@ public class Hooks {
     @Before
     public void setUp() {
         UiAutomator2Options options = new UiAutomator2Options();
-        options.setPlatformName("Android");
-        options.setPlatformVersion("16");
-        options.setDeviceName("SM-F956U");
-        options.setUdid("RFCX60NJVSF");
-        options.setNewCommandTimeout(Duration.ofSeconds(60));
-        options.withBrowserName("chrome");
-        options.setChromedriverExecutable("C:\\chromedriver\\chromedriver.exe");
-        options.setNoReset(true);
+        
+        String env = ConfigReader.get("env");  // reads "local" or "ci"
+        
+        if (env.equals("local")) {
+            // ✅ Physical device settings
+            options.setPlatformName("Android");
+            options.setPlatformVersion("16");
+            options.setDeviceName("SM-F956U");
+            options.setUdid("RFCX60NJVSF");
+            options.setNewCommandTimeout(Duration.ofSeconds(60));
+            options.withBrowserName("chrome");
+            options.setChromedriverExecutable("C:\\chromedriver\\chromedriver.exe");
+            options.setNoReset(true);
+
+        } else {
+            // ✅ Emulator settings for GitHub Actions
+            options.setPlatformName("Android");
+            options.setPlatformVersion("13");
+            options.setDeviceName("Pixel_5");
+            options.setAvd("Pixel_5");
+            options.setNewCommandTimeout(Duration.ofSeconds(60));
+            options.withBrowserName("chrome");
+            options.setNoReset(false);
+        }
 
         try {
             driver = new AndroidDriver(

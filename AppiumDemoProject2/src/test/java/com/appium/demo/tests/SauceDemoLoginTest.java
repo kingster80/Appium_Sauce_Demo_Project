@@ -18,7 +18,7 @@ public class SauceDemoLoginTest extends BaseClass {
 
     @BeforeMethod
     public void initPage() {
-        loginPage = new SauceDemoLoginPage(driver); // ✅ pass inherited driver
+        loginPage = new SauceDemoLoginPage(driver); // pass inherited driver
     }
 
     @Test
