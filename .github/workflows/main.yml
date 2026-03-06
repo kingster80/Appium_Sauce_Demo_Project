@@ -49,7 +49,7 @@ jobs:
         with:
           api-level: 29
           target: default
-          arch: x86_64
+          arch: arm64-v8a
           profile: pixel_5
           script: |
             appium --allow-insecure chromedriver_autodownload &
