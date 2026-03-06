@@ -68,5 +68,5 @@ jobs:
             appium --allow-insecure chromedriver_autodownload &
             sleep 15
             find . -name "pom.xml" | head -5
-            cd AppiumDemoProject2
+            cd AppiumDemoProject2 && mvn clean test
             mvn clean test
