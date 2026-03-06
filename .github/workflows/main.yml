@@ -67,6 +67,5 @@ jobs:
           script: |
             appium --allow-insecure chromedriver_autodownload &
             sleep 15
-            find . -name "pom.xml" | head -5
-            cd AppiumDemoProject2 && mvn clean test
+            cd AppiumDemoProject2 && mvn clean test || cat target/surefire-reports/*.txt
             mvn clean test
