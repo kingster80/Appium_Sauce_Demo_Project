@@ -1,5 +1,6 @@
 package com.appium.demo.tests;
 
+
 import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;

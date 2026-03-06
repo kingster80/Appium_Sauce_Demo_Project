@@ -12,6 +12,7 @@ import io.appium.java_client.android.options.UiAutomator2Options;
 import com.appium.demo.utils.ConfigReader;
 
 public class BaseClass {
+	
 
     protected AppiumDriver driver;
 
