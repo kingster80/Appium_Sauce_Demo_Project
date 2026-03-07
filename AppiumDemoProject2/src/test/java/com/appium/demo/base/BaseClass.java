@@ -33,7 +33,6 @@ public class BaseClass {
             options.setNoReset(true);
 
         } else {
-            // ✅ Emulator — GitHub Actions CI
             options.setPlatformName("Android");
             options.setPlatformVersion("10");
             options.setDeviceName("test");
@@ -41,8 +40,8 @@ public class BaseClass {
             options.setNewCommandTimeout(Duration.ofSeconds(60));
             options.withBrowserName("chrome");
             options.setNoReset(true);
-            options.setCapability("appium:chromedriverExecutable", "/usr/local/bin/chromedriver");
-            options.setCapability("appium:autodownloadChromedriver", true);
+            options.setCapability("appium:chromedriverExecutable", "/usr/local/bin/chromedriver"); // ✅ keep this
+            // remove autodownloadChromedriver
         }
 
         try {
