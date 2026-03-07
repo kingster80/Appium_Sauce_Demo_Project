@@ -13,7 +13,6 @@ import com.appium.demo.utils.ConfigReader;
 
 public class BaseClass {
 	
-
     protected AppiumDriver driver;
 
     @BeforeTest
