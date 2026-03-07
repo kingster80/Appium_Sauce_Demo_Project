@@ -11,7 +11,7 @@ defaults:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v3
 
@@ -83,4 +83,4 @@ jobs:
             appium --allow-insecure uiautomator2:chromedriver_autodownload --relaxed-security &
             sleep 15
             mvn clean test -f /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/pom.xml || cat /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/target/surefire-reports/*.txt
-            adb emu kill || true
+            
