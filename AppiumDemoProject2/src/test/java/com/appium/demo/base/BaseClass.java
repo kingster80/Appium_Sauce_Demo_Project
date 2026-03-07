@@ -41,7 +41,7 @@ public class BaseClass {
             options.withBrowserName("chrome");
             options.setNoReset(true);
             options.setCapability("appium:chromedriverExecutable", "/usr/local/bin/chromedriver"); // ✅ keep this
-            // remove autodownloadChromedriver
+            options.setCapability("appium:uiautomator2ServerInstallTimeout", 60000);
         }
 
         try {
