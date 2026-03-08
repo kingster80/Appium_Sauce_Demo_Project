@@ -14,29 +14,24 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v3
-
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
-
       - name: Install Appium
         run: |
           npm install -g appium@latest
           appium driver install uiautomator2@latest
-
       - name: Install ChromeDriver
         run: |
           wget -q "https://chromedriver.storage.googleapis.com/74.0.3729.6/chromedriver_linux64.zip"
@@ -44,17 +39,16 @@ jobs:
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
           chromedriver --version
-
       - name: Override env to ci
         run: |
           mkdir -p src/test/resources
           python3 -c "
-          import os
+          import os, re
           path = 'src/test/resources/config.properties'
           if os.path.exists(path):
               with open(path, 'r') as f:
                   content = f.read()
-              content = content.replace('env=local', 'env=ci')
+              content = re.sub(r'env=.*', 'env=ci', content)
               with open(path, 'w') as f:
                   f.write(content)
           else:
@@ -66,7 +60,6 @@ jobs:
           with open(path, 'r') as f:
               print(f.read())
           "
-
       - name: Start Emulator and Run Tests
         uses: reactivecircus/android-emulator-runner@v2
         continue-on-error: true
@@ -83,4 +76,4 @@ jobs:
             appium --allow-insecure uiautomator2:chromedriver_autodownload --relaxed-security &
             sleep 15
             mvn clean test -f /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/pom.xml || cat /home/runner/work/Appium_Sauce_Demo_Project/Appium_Sauce_Demo_Project/AppiumDemoProject2/target/surefire-reports/*.txt
-            
+            pkill -f emulator || true
