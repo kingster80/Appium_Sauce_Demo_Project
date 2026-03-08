@@ -13,7 +13,7 @@ import com.appium.demo.utils.ConfigReader;
 
 
 public class BaseClass {
-	
+
     protected AppiumDriver driver;
 
     @BeforeTest
@@ -22,7 +22,7 @@ public class BaseClass {
         String env = ConfigReader.get("env");
 
         if (env.equals("local")) {
-            // ✅ Physical device — local testing
+            // ✅ Physical device — local browser testing
             options.setPlatformName("Android");
             options.setPlatformVersion("16");
             options.setDeviceName("SM-F956U");
@@ -32,7 +32,19 @@ public class BaseClass {
             options.setChromedriverExecutable("C:\\chromedriver\\chromedriver.exe");
             options.setNoReset(true);
 
+        } else if (env.equals("local-app")) {
+            // ✅ Physical device — local native app testing
+            options.setPlatformName("Android");
+            options.setDeviceName("SM-F956U");
+            options.setUdid("RFCX60NJVSF");
+            options.setApp(System.getProperty("user.dir") + "/" + ConfigReader.get("app.path"));
+            options.setAppPackage("com.swaglabsmobileapp");
+            options.setAppActivity("com.swaglabsmobileapp.MainActivity");
+            options.setAutomationName("UIAutomator2");
+            options.setNewCommandTimeout(Duration.ofSeconds(60));
+
         } else {
+            // ✅ CI emulator — browser testing
             options.setPlatformName("Android");
             options.setPlatformVersion("10");
             options.setDeviceName("test");
@@ -40,7 +52,7 @@ public class BaseClass {
             options.setNewCommandTimeout(Duration.ofSeconds(60));
             options.withBrowserName("chrome");
             options.setNoReset(true);
-            options.setCapability("appium:chromedriverExecutable", "/usr/local/bin/chromedriver"); // ✅ keep this
+            options.setCapability("appium:chromedriverExecutable", "/usr/local/bin/chromedriver");
             options.setCapability("appium:uiautomator2ServerInstallTimeout", 60000);
         }
 

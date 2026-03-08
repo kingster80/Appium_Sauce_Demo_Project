@@ -1,4 +1,5 @@
 # src/test/resources/features/login.feature
+@web
 Feature: Sauce Demo Login
 
   Scenario: Successful login with valid credentials

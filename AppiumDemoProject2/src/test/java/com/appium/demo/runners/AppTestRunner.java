@@ -6,11 +6,12 @@ import io.cucumber.testng.CucumberOptions;
 @CucumberOptions(
     features = "src/test/resources/features",
     glue = "com.appium.demo.stepdefinitions",
+    tags = "@app",
     plugin = {
         "pretty",
         "html:target/cucumber-reports.html"
     },
     monochrome = true
 )
-public class TestRunner extends AbstractTestNGCucumberTests {
+public class AppTestRunner extends AbstractTestNGCucumberTests {
 }

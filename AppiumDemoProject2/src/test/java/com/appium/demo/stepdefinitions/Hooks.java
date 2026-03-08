@@ -31,6 +31,17 @@ public class Hooks {
             options.withBrowserName("chrome");
             options.setChromedriverExecutable("C:\\chromedriver\\chromedriver.exe");
             options.setNoReset(true);
+            
+        } else if (env.equals("local-app")) {
+            // ✅ Physical device — native app testing
+            options.setPlatformName("Android");
+            options.setDeviceName("SM-F956U");
+            options.setUdid("RFCX60NJVSF");
+            options.setApp(System.getProperty("user.dir") + "/src/test/resources/apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk");
+            options.setAppPackage("com.swaglabsmobileapp");
+            options.setAppActivity("com.swaglabsmobileapp.MainActivity");
+            options.setAutomationName("UIAutomator2");
+            options.setNewCommandTimeout(Duration.ofSeconds(60));
 
         } else {
             options.setPlatformName("Android");
