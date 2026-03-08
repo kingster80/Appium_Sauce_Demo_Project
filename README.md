@@ -1,6 +1,6 @@
 # AppiumSauceDemoProject
 
-An Android mobile test automation framework built with **Java**, **Appium**, **TestNG**, and **Cucumber BDD**, demonstrating the Page Object Model (POM) design pattern against the [Sauce Demo](https://www.saucedemo.com) web application running in Chrome on a physical Android device.
+An Android mobile test automation framework built with **Java**, **Appium**, **TestNG**, and **Cucumber BDD**, demonstrating the Page Object Model (POM) design pattern against both the [Sauce Demo](https://www.saucedemo.com) web application in Chrome and the **Swag Labs native Android app**.
 
 ---
 
@@ -29,20 +29,25 @@ src/
     │   ├── base/
     │   │   └── BaseClass.java                  # Driver setup and teardown
     │   ├── pages/
-    │   │   └── SauceDemoLoginPage.java          # Page Object for login page
+    │   │   ├── SauceDemoLoginPage.java          # Page Object for web login page
+    │   │   └── SwagLabsLoginPage.java           # Page Object for native app login
     │   ├── tests/
     │   │   └── SauceDemoLoginTest.java          # TestNG test cases
     │   ├── stepdefinitions/
     │   │   ├── Hooks.java                       # Cucumber driver lifecycle
-    │   │   └── LoginSteps.java                  # Cucumber step definitions
+    │   │   ├── LoginSteps.java                  # Web Cucumber step definitions
+    │   │   └── AppLoginSteps.java               # App Cucumber step definitions
     │   ├── runners/
-    │   │   └── TestRunner.java                  # Cucumber test runner
+    │   │   ├── WebTestRunner.java               # Runs web tests only (@web tag)
+    │   │   └── AppTestRunner.java               # Runs app tests only (@app tag)
     │   └── utils/
     │       └── ConfigReader.java                # Reads config.properties
     └── resources/
+        ├── apps/                                # Place APK file here (see setup below)
         ├── config.properties                    # Test data and URL config
         └── features/
-            └── login.feature                    # BDD feature file
+            ├── login.feature                    # Web BDD feature file (@web)
+            └── app_login.feature                # Native app BDD feature file (@app)
 ```
 
 ---
@@ -53,7 +58,7 @@ src/
 - Maven
 - [Appium Server 2.x](https://appium.io)
 - [UiAutomator2 Driver](https://github.com/appium/appium-uiautomator2-driver)
-- ChromeDriver matching your device's Chrome version
+- ChromeDriver matching your device's Chrome version (for web tests)
 - Android device with USB debugging enabled
 - ADB installed and on PATH
 
@@ -65,17 +70,41 @@ appium driver install uiautomator2
 
 ---
 
+## 📱 Native App Setup
+
+The Swag Labs APK is not included in this repository. To run the native app tests:
+
+1. Download the APK from the [Sauce Labs sample app releases page](https://github.com/saucelabs/sample-app-mobile/releases)
+2. Download `Android.SauceLabs.Mobile.Sample.app.2.7.1.apk`
+3. Place it in `src/test/resources/apps/`
+4. Install it on your device via ADB:
+```bash
+adb -s YOUR_DEVICE_UDID install src/test/resources/apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
+```
+
+---
+
 ## 🔧 Configuration
 
-Update `src/test/resources/config.properties` with your device details:
+Update `src/test/resources/config.properties`:
 
 ```properties
 url=https://www.saucedemo.com
 username=standard_user
 password=secret_sauce
+env=local
+app.path=src/test/resources/apps/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
 ```
 
-Update `BaseClass.java` with your device capabilities:
+### Environment Options
+
+| `env` value | Description |
+|---|---|
+| `local` | Physical device — Chrome browser (web tests) |
+| `local-app` | Physical device — Swag Labs native app (app tests) |
+| `ci` | GitHub Actions emulator — Chrome browser (set automatically by CI) |
+
+Update `Hooks.java` with your device capabilities:
 
 ```java
 options.setDeviceName("YOUR_DEVICE_NAME");
@@ -100,44 +129,46 @@ appium --allow-insecure chromedriver_autodownload
 
 **Step 2 — Connect your Android device via USB and authorise debugging**
 
-**Step 3 — Run TestNG tests:**
+### Running Web Tests
+
+Set `env=local` in `config.properties`, then right-click `WebTestRunner.java` → **Run As → TestNG Test**
+
+### Running Native App Tests
+
+Set `env=local-app` in `config.properties`, then right-click `AppTestRunner.java` → **Run As → TestNG Test**
+
+### Running via Maven
 ```bash
-mvn clean test
-```
-Or right-click `SauceDemoLoginTest.java` in Eclipse → **Run As → TestNG Test**
+# Web tests only
+mvn clean test -Dtest=WebTestRunner
 
-**Step 4 — Run BDD Cucumber tests:**
-
-Right-click `TestRunner.java` in Eclipse → **Run As → TestNG Test**
-
-Or via Maven:
-```bash
-mvn clean test -Dtest=TestRunner
+# App tests only
+mvn clean test -Dtest=AppTestRunner
 ```
 
 ---
 
 ## 🧪 Test Cases
 
-### TestNG Tests
-| Test | Description |
-|---|---|
-| `testSuccessfulLogin` | Logs in with valid credentials and verifies inventory page loads |
-| `testLoginWithInvalidCredentials` | Logs in with invalid credentials and verifies error message |
-
-### BDD Cucumber Scenarios
+### Web BDD Cucumber Scenarios (@web)
 | Scenario | Description |
 |---|---|
 | `Successful login with valid credentials` | Logs in with valid credentials and verifies inventory page loads |
 | `Login with invalid credentials` | Logs in with invalid credentials and verifies error message |
 
+### Native App BDD Cucumber Scenarios (@app)
+| Scenario | Description |
+|---|---|
+| `Successful login with valid credentials` | Logs in to Swag Labs app and verifies products page loads |
+| `Login with invalid credentials` | Logs in with invalid credentials and verifies error message |
+
 ---
 
-## 🥒 BDD Feature File
+## 🥒 BDD Feature Files
 
-Tests are written in plain English using Gherkin syntax, making them readable by non-technical stakeholders:
-
+### Web (`login.feature`)
 ```gherkin
+@web
 Feature: Sauce Demo Login
 
   Scenario: Successful login with valid credentials
@@ -155,6 +186,26 @@ Feature: Sauce Demo Login
     Then I should see an error message "Epic sadface: Username and password do not match any user in this service"
 ```
 
+### Native App (`app_login.feature`)
+```gherkin
+@app
+Feature: Swag Labs App Login
+
+  Scenario: Successful login with valid credentials
+    Given I am on the Swag Labs app login screen
+    When I enter app username "standard_user"
+    And I enter app password "secret_sauce"
+    And I tap the login button
+    Then I should see the products page
+
+  Scenario: Login with invalid credentials
+    Given I am on the Swag Labs app login screen
+    When I enter app username "wrong_user"
+    And I enter app password "wrong_pass"
+    And I tap the login button
+    Then I should see the app error message "Username and password do not match any user in this service."
+```
+
 ---
 
 ## 🏗 Design Patterns
@@ -165,15 +216,28 @@ Feature: Sauce Demo Login
 - **Hooks** — Cucumber `@Before` and `@After` hooks manage driver initialisation and teardown for BDD tests
 - **Config Reader** — test data and URLs stored in `config.properties`, not hardcoded in tests
 - **Explicit Waits** — all element interactions wait for visibility before acting, ensuring stability on mobile
+- **Tagged runners** — separate `WebTestRunner` and `AppTestRunner` allow independent execution of web and app test suites
+
+---
+
+## 🔄 CI/CD
+
+This project uses **GitHub Actions** to run web tests automatically on every push to `main`. The workflow:
+
+- Spins up an Android emulator (API 29)
+- Installs Appium and UiAutomator2
+- Overrides `env` to `ci` automatically (regardless of local setting)
+- Runs all `@web` tagged tests via Maven
+- Tears down the emulator
 
 ---
 
 ## 📝 Notes
 
-- This framework targets **Chrome browser on Android** (not a native app)
-- After navigating to the URL, Appium switches from `NATIVE_APP` to `WEBVIEW` context automatically to interact with web elements
-- ChromeDriver version must match the Chrome version installed on your device
-- Cucumber HTML reports are generated at `target/cucumber-reports.html` after each test run
+- Web tests target **Chrome browser on Android** — ChromeDriver version must match the Chrome version on your device
+- Native app tests use **Accessibility IDs** as locators (`test-Username`, `test-Password`, `test-LOGIN`)
+- After navigating to the URL in web tests, Appium switches from `NATIVE_APP` to `WEBVIEW` context automatically
+- Cucumber HTML reports are generated at `target/cucumber-reports-web.html` and `target/cucumber-reports-app.html` after each test run
 
 ---
 
